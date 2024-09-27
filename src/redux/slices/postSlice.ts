@@ -1,25 +1,50 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { Post, PostState } from '../types/index'
 
-interface PostState {
-    user: null | { id: string; name: string };
-}
-
-const initialState: PostState = {
-    user: null,
+const initialState = {
+    posts: [{ 
+        userId: 0,
+        id: 0,
+        title: '',
+        body: '',
+    }],
+    loading: false,
+    error: '',
 };
 
+// Асинхронный thunk для загрузки постов
+export const fetchPosts = createAsyncThunk<Post[]>('posts/fetchPosts', async () => {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+    return response.json();
+});
+
 const postSlice = createSlice({
-    name: 'post',
+    name: 'posts',
     initialState,
     reducers: {
-        setPost: (state, action: PayloadAction<{ id: string; name: string }>) => {
-            state.user = action.payload;
+        addPost: (state, action: PayloadAction<Post>) => {
+            state.posts.push(action.payload);
         },
-        clearPost: (state) => {
-            state.user = null;
+        removePost: (state, action: PayloadAction<number>) => {
+            state.posts = state.posts.filter(post => post.id !== action.payload);
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchPosts.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchPosts.fulfilled, (state, action) => {
+                state.loading = false;
+                state.posts = action.payload;
+            })
+            .addCase(fetchPosts.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || 'Неизвестная ошибка';
+                // state.error = typeof action.error.message === 'string'? action.error.message : 'Неизвестная ошибка';
+            });
     },
 });
 
-export const { setPost, clearPost } = postSlice.actions;
+export const { addPost, removePost } = postSlice.actions;
 export default postSlice.reducer;

@@ -1,12 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from '../redux/slices/postSlice';
+import { RootState } from '../redux/store';
 
-const PostsPage = () => {
+const PostList = () => {
+    const dispatch = useDispatch();
+    const { posts, loading, error } = useSelector((state: RootState) => state.posts);
+
+    useEffect(() => {
+        dispatch(fetchPosts() as any);
+    }, [dispatch]);
+
+
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
-            
-        </div>
-    )
-}
+        <ul>
+            {posts.map(post => (
+                <li key={post.id}>{post.title}</li>
+            ))}
+        </ul>
+    );
+};
 
-export default PostsPage;
+export default PostList;

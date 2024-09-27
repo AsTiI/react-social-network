@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { setUser, clearUser } from '../redux/slices/userSlice'
-import User from '../redux/types/index';
+import { User } from '../redux/types/index';
 
 import AuthPage from '../pages/AuthPage'
 

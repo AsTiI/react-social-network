@@ -1,9 +1,10 @@
+import '../styles/AuthPage.css'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { setUser, clearUser } from '../redux/slices/userSlice'
-import User from '../redux/types/index';
+// import User from '../redux/types/index';
 
 const AuthPage: React.FC = () => {
     const [username, setUsername] = useState<string>("");
@@ -19,7 +20,7 @@ const AuthPage: React.FC = () => {
         e.preventDefault();
         
         try {
-
+                
             if (username === 'user' && password === 'password') {
                 dispatch(setUser({id: '1', name: 'maxim', login: username, password: password}));
                 navigate("/profile")
@@ -31,35 +32,35 @@ const AuthPage: React.FC = () => {
         }
     }
     return (
-        <div>
-        <h2>Авторизация</h2>
-        <form onSubmit={handleLogin}>
-            <div>
-                <label>
-                    Имя пользователя:
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Пароль:
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </label>
-            </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button type="submit">Войти</button>
-        </form>
-    </div>
+        <div className='authpage_container'>
+            <h2>Авторизация</h2>
+            <form onSubmit={handleLogin}>
+                <div>
+                    <label>
+                        Имя пользователя:
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Пароль:
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </label>
+                </div>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button type="submit">Войти</button>
+            </form>
+        </div>
     );
 };
 
