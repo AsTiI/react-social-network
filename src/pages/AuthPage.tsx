@@ -1,47 +1,55 @@
-import '../styles/AuthPage.css'
-import React, { useState } from 'react';
+import '../styles/AuthPage.css';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
-import { setUser, clearUser } from '../redux/slices/userSlice'
-// import User from '../redux/types/index';
+import { login } from '../redux/slices/userSlice';
 
 const AuthPage: React.FC = () => {
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
-    
-    const dispatch = useDispatch();
+    const { currentUser } = useSelector((state: RootState) => state.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const user = useSelector((state: RootState) => state.user.user);
-    
+    useEffect(() => {
+        if (currentUser) {
+            console.log(currentUser);
+            navigate("/profile");
+        }else{
+            const token = localStorage.getItem('rsn');
+            if (token) {
+                try {
+                    const parsedToken = JSON.parse(token);
+                    dispatch(login({ email: parsedToken.email, password: parsedToken.password }));
+                } catch (error) {
+                    console.error("Ошибка при парсинге токена:", error);
+                }
+            }
+        }
+    }, [currentUser]);
+
+    const handleReg = () => {
+        navigate("/registration");
+    };
+
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
-        try {
-                
-            if (username === 'user' && password === 'password') {
-                dispatch(setUser({id: '1', name: 'maxim', login: username, password: password}));
-                navigate("/profile")
-            } else {
-                setError('Неверное имя пользователя или пароль');
-            }
-        } catch (err) {
-            setError('Произошла ошибка. Пожалуйста, попробуйте снова.');
-        }
-    }
+        dispatch(login({ email: email, password: password }));
+    };
+
     return (
         <div className='authpage_container'>
             <h2>Авторизация</h2>
             <form onSubmit={handleLogin}>
                 <div>
                     <label>
-                        Имя пользователя:
+                        Почта:
                         <input
                             type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </label>
@@ -59,6 +67,7 @@ const AuthPage: React.FC = () => {
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button type="submit">Войти</button>
+                <input type="button" value="Регистрация" onClick={handleReg} />
             </form>
         </div>
     );

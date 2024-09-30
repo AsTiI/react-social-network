@@ -1,12 +1,14 @@
 export interface User {
-    id: string;
-    login: string;
+    id: number;
+    isAuthenticated?: boolean;
+    email: string;
     password: string;
     name: string;
 }
 
-export interface UserState {
-    user: null | { id: string; name: string, login: string, password: string };
+export interface UsersState {
+    users: User[];
+    currentUser: User | null;
 }
 
 export interface Post {
