@@ -1,0 +1,16 @@
+.default_btn {
+    padding: 5px 10px;
+    margin: 5px;
+    background-color: aliceblue;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.default_btn:hover {
+    background-color: #e8f1fa;
+}
+
+.default_btn:active {
+    padding: 4px 9px;
+    border-width: 2px;
+}

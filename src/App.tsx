@@ -44,7 +44,7 @@ function App() {
                     <Route path="/profile" element={isAuth ? <ProfilePage /> : <Navigate to="/auth" />} />
                     <Route path="/posts" element={isAuth ? <PostsPage /> : <Navigate to="/auth" />} />
                     <Route path="/auth" element={<AuthPage />} />
-                    <Route path="/registration" element={<RegistrationPage />} />
+                    <Route path="/registration" element={!isAuth ?<RegistrationPage /> : <Navigate to="/auth" />} />
                 </Routes>
             </Router>
         </div>

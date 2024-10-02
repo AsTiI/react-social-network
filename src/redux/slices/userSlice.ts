@@ -3,17 +3,21 @@ import { UsersState, User } from '../types/index'
 
 const initialState: UsersState = {
     users: [{
-        id: 2,
-        isAuthenticated: false,
-        email: "222@222",
-        password: "222",
-        name: "222",
-    },{
         id: 1,
         isAuthenticated: false,
-        email: "111@111",
+        email: "maxim@gmail.com",
         password: "111",
-        name: "111",
+        surname: "Астапёнок",
+        name: "Максим",
+        fathername: "Дмитриевич",
+    },{
+        id: 2,
+        isAuthenticated: false,
+        email: "alice@gmail.com",
+        password: "222",
+        surname: "Мурукина",
+        name: "Алиса",
+        fathername: "Петровна",
     }],
     currentUser: null,
 };

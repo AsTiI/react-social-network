@@ -1,4 +1,4 @@
-.regpage_container {
+.homepage_container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,12 +8,12 @@
     padding: 30px 15px 25px;
 }
 
-.regpage_container h2 {
+.homepage_container h2 {
     text-align: center;
     padding: 0 0 30px;
 }
 
-.regpage_container form {
+.homepage_container form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -22,4 +22,9 @@
 form .form_elem {
     display: flex;
     justify-content: space-between;
+}
+
+.btns_container{
+    display: flex;
+    justify-content: space-around;
 }

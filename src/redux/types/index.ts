@@ -3,7 +3,9 @@ export interface User {
     isAuthenticated?: boolean;
     email: string;
     password: string;
+    surname: string;
     name: string;
+    fathername: string;
 }
 
 export interface UsersState {
@@ -21,5 +23,6 @@ export interface Post {
 export interface PostState {
     posts: Post[];
     loading: boolean;
+    userPosts: Post[] | null;
     error: string | null;
 }

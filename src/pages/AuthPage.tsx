@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { login } from '../redux/slices/userSlice';
+import Button from '../components/Button/Button';
 
 const AuthPage: React.FC = () => {
     const [email, setEmail] = useState<string>("");
@@ -37,38 +38,42 @@ const AuthPage: React.FC = () => {
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(login({ email: email, password: password }));
+        console.log({ email: email, password: password });
     };
 
     return (
         <div className='authpage_container'>
             <h2>Авторизация</h2>
             <form onSubmit={handleLogin}>
-                <div>
-                    <label>
-                        Почта:
+                <div className='form_elem'>
+                    <label htmlFor="email">Почта:</label>
                         <input
                             type="text"
+                            name="email"
+                            id="user_email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-                    </label>
                 </div>
-                <div>
-                    <label>
-                        Пароль:
+                <div className='form_elem'>
+                    <label htmlFor="password">Пароль:</label>
                         <input
                             type="password"
+                            name="password"
+                            id="user_password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
-                    </label>
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit">Войти</button>
-                <input type="button" value="Регистрация" onClick={handleReg} />
+                <div className="btns_container">
+                    <Button type='submit' value='Войти' />
+                    <Button value='Регистрация' onClick={handleReg}/>
+                </div>
             </form>
+
         </div>
     );
 };

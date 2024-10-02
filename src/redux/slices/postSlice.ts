@@ -3,11 +3,36 @@ import { Post, PostState } from '../types/index'
 
 const initialState = {
     posts: [{ 
-        userId: 0,
-        id: 0,
-        title: '',
-        body: '',
+        userId: 1,
+        id: 1,
+        title: 'Первый пост первого пользователя',
+        body: 'Описание первого поста первого пользователя',
+    },
+    { 
+        userId: 1,
+        id: 2,
+        title: 'Второй пост первого пользователя',
+        body: 'Описание второго поста первого пользователя',
+    },
+    { 
+        userId: 2,
+        id: 3,
+        title: 'Первый пост второго пользователя',
+        body: 'Описание первого поста второго пользователя',
+    },
+    { 
+        userId: 2,
+        id: 4,
+        title: 'Второй пост второго пользователя',
+        body: 'Описание первого поста второго пользователя',
+    },
+    { 
+        userId: 2,
+        id: 5,
+        title: 'Третий пост второго пользователя',
+        body: 'Описание первого поста второго пользователя',
     }],
+    userPosts: [],
     loading: false,
     error: '',
 };
@@ -22,12 +47,22 @@ const postSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        addPost: (state, action: PayloadAction<Post>) => {
-            state.posts.push(action.payload);
+        addPost: (state: PostState, action: PayloadAction<Post>) => {
+            state.posts.push({...action.payload, id: state.posts.reduce((acc, currentValue)=> Math.max(acc, currentValue.id),0)+1});
         },
-        removePost: (state, action: PayloadAction<number>) => {
+        removePost: (state: PostState, action: PayloadAction<number>) => {
             state.posts = state.posts.filter(post => post.id !== action.payload);
+            if(state.userPosts)
+                state.userPosts = state.userPosts.filter(post=> post.id !== action.payload);
         },
+        setUserPosts: (state: PostState, action: PayloadAction<number>) => {
+            state.userPosts = state.posts.filter(post=> post.userId === action.payload);
+            console.log(action.payload);
+            
+        },
+        clearUserPosts: (state: PostState)=> {
+            state.userPosts = null;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -46,5 +81,5 @@ const postSlice = createSlice({
     },
 });
 
-export const { addPost, removePost } = postSlice.actions;
+export const { addPost, removePost, setUserPosts, clearUserPosts } = postSlice.actions;
 export default postSlice.reducer;
